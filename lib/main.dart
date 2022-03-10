@@ -3,20 +3,20 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ffi/ffi.dart';
 
-class FFIBridge
-{
+class FFIBridge {
   static bool initialize() {
     nativeApiLib = Platform.isMacOS || Platform.isIOS
-        ? DynamicLibrary.process()  // macos and ios
+        ? DynamicLibrary.process() // macos and ios
         : (DynamicLibrary.open(Platform.isWindows // windows
             ? 'api.dll'
             : 'libapi.so')); // android and linux
 
-    final _add = nativeApiLib.lookup<NativeFunction<Int32 Function(Int32, Int32)>>('add');
+    final _add = nativeApiLib
+        .lookup<NativeFunction<Int32 Function(Int32, Int32)>>('add');
     add = _add.asFunction<int Function(int, int)>();
 
-
-    final _cap = nativeApiLib.lookup<NativeFunction<Pointer<Utf8> Function(Pointer<Utf8>)>>('capitalize');
+    final _cap = nativeApiLib.lookup<
+        NativeFunction<Pointer<Utf8> Function(Pointer<Utf8>)>>('capitalize');
     _capitalize = _cap.asFunction<Pointer<Utf8> Function(Pointer<Utf8>)>();
 
     return true;
@@ -130,8 +130,9 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('capitalize flutter=${FFIBridge.capitalize('flutter')}', style: TextStyle(fontSize: 40)),
-            Text('1+2=${FFIBridge.add(1,2)}', style: TextStyle(fontSize: 40)),
+            Text('capitalize flutter=${FFIBridge.capitalize('flutter')}',
+                style: TextStyle(fontSize: 40)),
+            Text('1+2=${FFIBridge.add(1, 2)}', style: TextStyle(fontSize: 40)),
             const Text(
               'You have pushed the button this many times:',
             ),
