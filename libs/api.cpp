@@ -5,6 +5,7 @@
 #endif
 
 #include <cstring>
+#include <ctype.h>
 
 static char buffer[1024];
 
@@ -17,6 +18,6 @@ int add(int a, int b)
 EXPORT
 char* capitalize(char *str) {
     strcpy(buffer, str);
-    buffer[0] = 'X';
+    buffer[0] = toupper(buffer[0]);
     return buffer;
 }
